@@ -1,0 +1,912 @@
+{
+  "name": "Automated Birthday Messaging Pipeline (n8n + LLM + Sheets)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 6 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        240,
+        96
+      ],
+      "id": "1bace2d4-5de1-4205-b896-cf6e993b7de6",
+      "name": "Disparo diário"
+    },
+    {
+      "parameters": {
+        "formTitle": "Cadastro de Aniversariantes",
+        "formDescription": "Preencha seus dados para receber mensagens personalizadas no seu aniversário!",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Nome",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "WhatsApp",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Data de nascimento",
+              "fieldType": "date",
+              "requiredField": true
+            }
+          ]
+        },
+        "responseMode": "=onReceived",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        224,
+        -304
+      ],
+      "id": "1429c4bf-9a1b-4f25-9404-97e49edca1e9",
+      "name": "Form de Cadastro",
+      "webhookId": "46186779-4a15-41f2-b4c9-d2d1efea9db8"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1voVNOWkZHBVavM-jkDbM_HjXNobLE2ZdCHKCIb8ANoo",
+          "mode": "list",
+          "cachedResultName": "Dados",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1voVNOWkZHBVavM-jkDbM_HjXNobLE2ZdCHKCIb8ANoo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1voVNOWkZHBVavM-jkDbM_HjXNobLE2ZdCHKCIb8ANoo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "NOME": "={{ $json.Nome }}",
+            " EMAIL": "={{ $json.Email }}",
+            "TELEFONE": "={{ $json.WhatsApp }}",
+            "DATA DE NASCIMENTO": "={{ $json['Data de nascimento'] }}",
+            "STATUS": "não enviado"
+          },
+          "matchingColumns": [
+            "NOME"
+          ],
+          "schema": [
+            {
+              "id": "NOME",
+              "displayName": "NOME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " EMAIL",
+              "displayName": " EMAIL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "TELEFONE",
+              "displayName": "TELEFONE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "DATA DE NASCIMENTO",
+              "displayName": "DATA DE NASCIMENTO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        -304
+      ],
+      "id": "69b7d92a-4a93-4183-a5c1-fb428c72163e",
+      "name": "Cadastro de Usuário ",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nelZvaZDd0wIJ3h9",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Precondition/ Sanity Check",
+        "height": 80,
+        "width": 256,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -208,
+        -384
+      ],
+      "typeVersion": 1,
+      "id": "a7813b8e-6a5c-42ce-ab7f-7335051f4429",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## Ação Executada",
+        "height": 80,
+        "width": 256,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -208,
+        -288
+      ],
+      "typeVersion": 1,
+      "id": "a949fe52-714f-4cc5-afdd-ee1eea1e3187",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "## Nota/Comentario",
+        "height": 80,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -208,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "a77e6dbe-6f81-4268-8a38-f8d5e15500da",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "## Definição de dados",
+        "height": 80,
+        "width": 256,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -208,
+        -480
+      ],
+      "typeVersion": 1,
+      "id": "16d81269-8aae-4655-9f96-7ef12e28e355",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "width": 166,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        192,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "8d8d24e4-9b56-4a18-9b86-57e39ec73df5",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 176,
+        "width": 182,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        400,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "a3ec8cf3-cbb7-46bc-9b0f-ae70d107cefd",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "width": 166,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        208,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "572a5410-3a8d-47eb-9197-9ae69b0ae215",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 176,
+        "width": 166,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        416,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "ba3bf016-a9d1-4eab-98e7-c4f26d490eff",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "width": 166,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        640,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "b883de60-24e8-4ac2-9677-07bb45ee3d3a",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "width": 192,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        864,
+        64
+      ],
+      "typeVersion": 1,
+      "id": "0cc1ae1e-fb9b-4542-9805-7a1430b451aa",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 144,
+        "width": 150,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1104,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "72e4545d-0b08-48e1-b5dd-8c7bdb7a42e0",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 128,
+        "width": 246,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1312,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "541ce67a-681d-4c60-9cbf-82a09213138f",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 128,
+        "width": 150,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1408,
+        208
+      ],
+      "typeVersion": 1,
+      "id": "2d249bd0-daa5-4f52-8f0d-96f860c283ae",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 192,
+        "width": 214,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1632,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "8bdc7dca-2e0c-48df-afec-60ac674affbc",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 192,
+        "width": 198,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1888,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "3f3af852-e9b7-4b56-a963-d43e205fd16a",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "content": "## Garante o envio apenas se a data bater com MM-DD atual e o status não for 'ENVIADO'.",
+        "height": 80,
+        "width": 416
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        640,
+        256
+      ],
+      "typeVersion": 1,
+      "id": "7c644ed4-d4b1-4848-b296-9cc9ad5851ed",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "content": "## Prompt instruído a gerar mensagens curtas, humanizadas e sem emojis em excesso.",
+        "height": 112,
+        "width": 288
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1104,
+        208
+      ],
+      "typeVersion": 1,
+      "id": "2457005b-c286-4aa8-bbf4-f2ff5c8bd2ef",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "content": "## Requer sessão ativa no container Docker. Endpoint POST /api/sendText",
+        "height": 112,
+        "width": 208
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1632,
+        256
+      ],
+      "typeVersion": 1,
+      "id": "d904c0dc-01d4-4b8f-b8a0-b1f055209326",
+      "name": "Sticky Note21"
+    },
+    {
+      "parameters": {
+        "content": "# LEGENDAS",
+        "height": 464,
+        "width": 352,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -224,
+        -544
+      ],
+      "typeVersion": 1,
+      "id": "3732a5db-28a3-45ac-801c-e63b275020b1",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "# FLUXO PRINCIPAL\n## Este fluxo é o pipeline central da automação. Ele roda diariamente para identificar os aniversariantes do dia, gerar uma mensagem personalizada via Inteligência Artificial e realizar o envio pelo WhatsApp.",
+        "height": 464,
+        "width": 1952,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        176,
+        -64
+      ],
+      "typeVersion": 1,
+      "id": "4b019e75-eca2-415c-b8b8-02a0aaf9aba4",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "baf6bc69-70c5-4c04-9eec-6f9b7388ffda",
+              "leftValue": "={{ $json.STATUS }}",
+              "rightValue": "ENVIADO",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        912,
+        80
+      ],
+      "id": "c526038d-0d16-4937-a610-583bc706f874",
+      "name": "Valida Status do Envio"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "bb79fda2-76e2-44e1-b500-e6dee18f860f",
+              "leftValue": "={{ $today.toFormat('MM-dd') }}",
+              "rightValue": "={{ DateTime.fromISO($json['DATA DE NASCIMENTO']).toFormat('MM-dd') }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        96
+      ],
+      "id": "cd545ce2-6a08-4bfb-8e20-07675e735da2",
+      "name": "Valida Data de Aniversário"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Resgata o nome e o telefone diretamente do nó da planilha\nconst nome = $('Listar Usuários').first().json.NOME;\nconst telefone = $('Listar Usuários').first().json.TELEFONE;\n\nconst instrucao = `Gere uma mensagem curta e especial de FELIZ ANIVERSÁRIO para envio por WhatsApp para ${nome}.\n\nREGRAS RÍGIDAS DE FORMATO:\n- Gere APENAS o texto final da mensagem.\n- NÃO adicione títulos, \"Assunto:\", aspas ou marcadores.\n- O tom deve ser alegre, caloroso, festivo e amigável.\n- Mencione o nome ${nome} de forma natural.\n- Inclua alguns emojis de celebração (ex: 🎂, 🎉, 🥳).\n- A mensagem deve ter no máximo 3 ou 4 linhas.`;\n\nreturn {\n  json: {\n    prompt: instrucao,\n    TELEFONE: telefone\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1136,
+        64
+      ],
+      "id": "b9f2e716-0c59-44c4-8f1c-262321cce30c",
+      "name": "Prompt Base"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        224
+      ],
+      "id": "b1b534ea-e706-4c0b-874c-5425cabedfbd",
+      "name": "Conector LLM",
+      "credentials": {
+        "groqApi": {
+          "id": "qecUurCTnINJOR8Q",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1328,
+        64
+      ],
+      "id": "5e197e29-0edf-485d-99aa-94ae96e93c93",
+      "name": "Gerador de Texto"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:3000/api/sendText",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Api-Key",
+              "value": "a806d206f65d4744b09e545e0d453a48"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "session",
+              "value": "default"
+            },
+            {
+              "name": "chatId",
+              "value": "={{ $('Listar Usuários').item.json.TELEFONE }}@c.us"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1696,
+        64
+      ],
+      "id": "c8970a97-6498-4ebd-a817-92a8356b8d87",
+      "name": "Envio WhatsApp (WAHA)"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1voVNOWkZHBVavM-jkDbM_HjXNobLE2ZdCHKCIb8ANoo",
+          "mode": "list",
+          "cachedResultName": "Dados",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1voVNOWkZHBVavM-jkDbM_HjXNobLE2ZdCHKCIb8ANoo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1voVNOWkZHBVavM-jkDbM_HjXNobLE2ZdCHKCIb8ANoo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "STATUS": "ENVIADO",
+            "NOME": "={{ $('Listar Usuários').item.json.NOME }}"
+          },
+          "matchingColumns": [
+            "NOME"
+          ],
+          "schema": [
+            {
+              "id": "NOME",
+              "displayName": "NOME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " EMAIL",
+              "displayName": " EMAIL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "TELEFONE",
+              "displayName": "TELEFONE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "DATA DE NASCIMENTO",
+              "displayName": "DATA DE NASCIMENTO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1936,
+        64
+      ],
+      "id": "c376736f-0cf3-4ad5-9308-cb31efe9e9d9",
+      "name": "Atualizar Status para Enviado",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nelZvaZDd0wIJ3h9",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1voVNOWkZHBVavM-jkDbM_HjXNobLE2ZdCHKCIb8ANoo",
+          "mode": "list",
+          "cachedResultName": "Dados",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1voVNOWkZHBVavM-jkDbM_HjXNobLE2ZdCHKCIb8ANoo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1voVNOWkZHBVavM-jkDbM_HjXNobLE2ZdCHKCIb8ANoo/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        96
+      ],
+      "id": "f52ca80a-548e-4dbf-99f2-7ac13c0fe709",
+      "name": "Listar Usuários",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "nelZvaZDd0wIJ3h9",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# FLUXO DE CADASTRO\n## Este fluxo é responsável pela entrada de novos dados no sistema. Ele captura as informações enviadas pelos usuários através do formulário e realiza o registro ou atualização na base de dados.",
+        "height": 464,
+        "width": 432,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        176,
+        -544
+      ],
+      "typeVersion": 1,
+      "id": "0bc52457-3b6a-4c6e-a6fe-dff5a9b873de",
+      "name": "Sticky Note6"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Disparo diário": {
+      "main": [
+        [
+          {
+            "node": "Listar Usuários",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form de Cadastro": {
+      "main": [
+        [
+          {
+            "node": "Cadastro de Usuário ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cadastro de Usuário ": {
+      "main": [
+        []
+      ]
+    },
+    "Valida Status do Envio": {
+      "main": [
+        [
+          {
+            "node": "Prompt Base",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valida Data de Aniversário": {
+      "main": [
+        [
+          {
+            "node": "Valida Status do Envio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Prompt Base": {
+      "main": [
+        [
+          {
+            "node": "Gerador de Texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Conector LLM": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Gerador de Texto",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerador de Texto": {
+      "main": [
+        [
+          {
+            "node": "Envio WhatsApp (WAHA)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envio WhatsApp (WAHA)": {
+      "main": [
+        [
+          {
+            "node": "Atualizar Status para Enviado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Listar Usuários": {
+      "main": [
+        [
+          {
+            "node": "Valida Data de Aniversário",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "a638abe6-9ca3-439c-841b-1055934234a8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0f576c1187ced2cf6d296b67aa1532159ab3cab8cb5d1b0abd0c64c8676aaf49"
+  },
+  "nodeGroups": [],
+  "id": "HRhfGjod2vS2yJfZ",
+  "tags": []
+}
