@@ -80,5 +80,7 @@ Pipeline central de automação. Executa diariamente para identificar os anivers
   *  Regra da IA: O prompt é parametrizado para gerar mensagens curtas, humanizadas e sem excesso de emojis.
   * Requisito Técnico: O envio de mensagens exige um container Docker ativo rodando a API do WAHA apontando para o endpoint /api/sendText.
 
-## ✒️ Autor
- -   Desenvolvido por **Apolônio Melo**.
+## 👤 Autor
+
+**Apolônio Melo**
+[GitHub](https://github.com/apolonio-web) · [LinkedIn](https://linkedin.com/in/apolonio-melo)
